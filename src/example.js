@@ -254,7 +254,6 @@ export default class OverrideEverythingSheet extends PureComponent {
       hideSiblings = true;
       colSpan = selection.cells;
     }
-    console.log(hideSiblings, colSpan);
 
     return (
       <CellRenderer
@@ -267,6 +266,9 @@ export default class OverrideEverythingSheet extends PureComponent {
       />
     );
   }
+  valueRenderer = (cell) => {
+    return cell.value;
+  };
 
   render() {
     return (
@@ -280,7 +282,7 @@ export default class OverrideEverythingSheet extends PureComponent {
           rowRenderer={this.rowRenderer}
           cellRenderer={this.cellRenderer}
           onCellsChanged={this.handleCellsChanged}
-          valueRenderer={(cell) => cell.value}
+          valueRenderer={this.valueRenderer}
           onSelect={this.onSelect}
         />
       </div>
