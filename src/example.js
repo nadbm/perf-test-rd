@@ -65,7 +65,6 @@ const RowRenderer = (props) => {
 };
 
 const CellRenderer = React.memo((props) => {
-  console.log("RENDER cell");
   const {
     as: Tag,
     cell,
@@ -184,17 +183,19 @@ export default class OverrideEverythingSheet extends PureComponent {
 
   handleCellsChanged(changes, additions) {
     const grid = this.state.grid;
+    const updatedRow = {};
+    let finalChanges = changes;
     if (this.state.selection !== null && changes.length === 1) {
-      new Array(this.state.selection.cells)
-        .fill(changes[0])
-        .forEach(({ cell, row, col, value }, index) => {
-          grid[row][col + index] = { ...grid[row][col + index], value };
-        });
-    } else {
-      changes.forEach(({ cell, row, col, value }) => {
-        grid[row][col] = { ...grid[row][col], value };
-      });
+      // Mass delete
+      finalChanges = new Array(this.state.selection.cells).fill(changes[0]);
     }
+    finalChanges.forEach(({ cell, row, col, value }) => {
+      if (!updatedRow[row]) {
+        updatedRow[row] = true;
+        grid[row] = [...grid[row]];
+      }
+      grid[row][col] = { ...grid[row][col], value };
+    });
 
     // paste extended beyond end, so add a new row
     additions &&
