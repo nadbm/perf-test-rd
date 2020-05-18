@@ -1,6 +1,6 @@
 import React, { PureComponent } from "react";
-import DataSheet from "react-datasheet";
 import classNames from "classnames";
+import DataSheet from "react-datasheet";
 
 const SheetRenderer = (props) => {
   const {
@@ -167,7 +167,16 @@ export default class OverrideEverythingSheet extends PureComponent {
   handleSelectChanged(index, selected) {
     const selections = [...this.state.selections];
     selections[index] = selected;
-    this.setState({ selections });
+    // Need to update full row to trigger proper rerender
+
+    this.setState({
+      selections,
+      grid: [
+        ...this.state.grid.slice(0, index),
+        [...this.state.grid[index]],
+        ...this.state.grid.slice(index + 1),
+      ],
+    });
   }
 
   onSelect(position) {
@@ -233,6 +242,7 @@ export default class OverrideEverythingSheet extends PureComponent {
   }
 
   rowRenderer(props) {
+    console.log("RENDERING HERE", props.row);
     const { selections } = this.state;
     return (
       <RowRenderer
