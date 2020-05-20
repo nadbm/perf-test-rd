@@ -23,7 +23,8 @@ const SheetRenderer = (props) => {
               type="checkbox"
               checked={selections.every((s) => s)}
               onChange={(e) => onSelectAllChanged(e.target.checked)}
-            />
+            />{" "}
+            toggle all
           </Cell>
           {columns.map((column) => (
             <Cell
@@ -57,7 +58,8 @@ const RowRenderer = (props) => {
           type="checkbox"
           checked={selected}
           onChange={(e) => onSelectChanged(row, e.target.checked)}
-        />
+        />{" "}
+        row {row + 1}
       </Cell>
       {props.children}
     </Tag>
@@ -198,12 +200,12 @@ export default class OverrideEverythingSheet extends PureComponent {
       // Mass delete
       finalChanges = new Array(this.state.selection.cells).fill(changes[0]);
     }
-    finalChanges.forEach(({ cell, row, col, value }) => {
+    finalChanges.forEach(({ cell, row, col, value }, index) => {
       if (!updatedRow[row]) {
         updatedRow[row] = true;
         grid[row] = [...grid[row]];
       }
-      grid[row][col] = { ...grid[row][col], value };
+      grid[row][col + index] = { ...grid[row][col + index], value };
     });
 
     // paste extended beyond end, so add a new row
@@ -296,6 +298,20 @@ export default class OverrideEverythingSheet extends PureComponent {
           valueRenderer={this.valueRenderer}
           onSelect={this.onSelect}
         />
+        <ul className="row-selections">
+          <li><h3>Rows sate:</h3></li>
+          {this.state.selections.map((selected, index) => (<li key={index}>
+            <input
+              type="checkbox"
+              checked={selected}
+              onChange={(e) => {
+                const selections = [...this.state.selections];
+                selections[index] = e.target.checked;
+                this.setState({ selections })
+              }}/>{" "}
+            row {index + 1}
+          </li>))}
+        </ul>
       </div>
     );
   }
