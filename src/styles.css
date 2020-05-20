@@ -15,6 +15,11 @@
   border: 1px double white;
 }
 
+.data-grid-container .data-grid .cell:first-child {
+  text-align: left;
+  padding-left: 40px;
+}
+
 .data-grid-container .data-grid .cell.selected {
   z-index: 3;
   border: 1px double rgb(33, 133, 208);
@@ -76,4 +81,10 @@
   padding-left: 0;
   margin-top: 0;
   margin-bottom: 0;
+}
+
+.row-selections {
+  list-style: none;
+  text-align: left;
+  padding-left: 42px;
 }
