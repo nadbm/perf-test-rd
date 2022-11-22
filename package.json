@@ -10,7 +10,7 @@
   "dependencies": {
     "react": "16.12.0",
     "react-dom": "16.12.0",
-    "react-scripts": "3.0.1",
+    "react-scripts": "5.0.1",
     "react-datasheet": "nadbm/react-datasheet#refs/pull/213/head",
     "classnames": "^2.2.6"
   },
